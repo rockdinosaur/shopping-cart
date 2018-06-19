@@ -53,13 +53,8 @@ class Shop extends Component {
       })
     } else {
       const product = this.state.products.filter(p => p.id === id)[0];
-<<<<<<< HEAD
       const productToAdd = Object.assign({}, product, { quantity: 1 });
       updatedCart = this.state.cart.concat(productToAdd);
-=======
-      const productToAdd = Object.assign({}, product, {quantity: 1})
-      updatedCart = this.state.cart.concat(productToAdd)
->>>>>>> a4b996da86cd4e8a64f016829bdb441720c4e773
     }
 
     const updatedProducts = this.state.products.map((product) => {
