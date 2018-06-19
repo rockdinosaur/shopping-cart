@@ -5,14 +5,30 @@ class Cart extends React.Component {
   render() {
     const items = this.props.cartItems.map(item => {
       return (
-        <tr>
-          <td>{item.title}</td>
-          <td>{item.quantity}</td>
-          <td>{item.price}</td>
-        </tr>
+        <CartItem
+          key={'key-' + item.id}
+          title={item.title}
+          quantity={item.quantity}
+          price={item.price}
+        />
       )
     });
 
+    const hasItems = this.props.cartItems.length > 0;
+    const itemsTable = (
+      <div>
+        <thead>
+          <tr>
+            <th>Item</th>
+            <th>Quantity</th>
+            <th>Price</th>
+          </tr>
+        </thead>
+        <tbody>
+          {items}
+        </tbody>
+      </div>
+    );
     let total = this.props
                 .cartItems
                 .reduce((total, item) => {
@@ -20,34 +36,32 @@ class Cart extends React.Component {
                 }, 0);
     total = total.toFixed(2);
 
-    if (this.props.cartItems.length > 0) {
-      return (
-          <div className='cart'>
-            <table class="cart-items">
-              <tr>
-                <th>Item</th>
-                <th>Quantity</th>
-                <th>Price</th>
-              </tr>
-              {items}
-              <tr>
-                <td colspan="3" class="total">
-                  Total: ${total}
-                </td>
-              </tr>
-            </table>
-          </div>
-      )
-    } else {
-      return (
+    return (
         <div className='cart'>
           <h2>Your Cart</h2>
-          <p>Your cart is empty</p>
-          <p>Total: $0</p>
-          <a class="button checkout disabled">Checkout</a>
+          <table class="cart-items">
+            {hasItems ? itemsTable : (<p>Your cart is empty</p>)}
+            <tr>
+              <td colspan="3" class="total">
+                Total: ${total}
+              </td>
+            </tr>
+          </table>
+          <a className={`button checkout ${hasItems ? '' : 'disabled'}`}>Checkout</a>
         </div>
       )
-    }
+  }
+}
+
+class CartItem extends React.Component {
+  render() {
+    return (
+      <tr>
+        <td>{this.props.title}</td>
+        <td>{this.props.quantity}</td>
+        <td>{this.props.price}</td>
+      </tr>
+    )
   }
 }
 
