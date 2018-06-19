@@ -14,7 +14,7 @@ class Shop extends Component {
     this.setState({ products: seedData });
   }
 
-  addToCart = (id) => {
+  getUpdatedCart = (id) => {
     let updatedCart;
 
     if (this.state.cart.some(product => product.id === id)) {
@@ -31,7 +31,11 @@ class Shop extends Component {
       updatedCart = this.state.cart.concat(productToAdd);
     }
 
-    const updatedProducts = this.state.products.map((product) => {
+    return updatedCart;
+  }
+
+  getUpdatedProducts = (id) => {
+    return this.state.products.map((product) => {
       if (product.id === id) {
         return Object.assign({}, product, {
           quantity: product.quantity - 1,
@@ -40,12 +44,23 @@ class Shop extends Component {
         return product;
       }
     });
+  }
+  addToCart = (id) => {
+
 
     this.setState(prevState => {
       return {
-        cart: updatedCart,
-        products: updatedProducts
+        cart: this.getUpdatedCart(id),
+        products: this.getUpdatedProducts(id)
       }
+    })
+  }
+
+  emptyCart = () => {
+    this.setState(prevState => {
+      return ({
+        cart: []
+      })
     })
   }
 
@@ -54,6 +69,7 @@ class Shop extends Component {
       <div id="app">
         <Header
           cartItems={this.state.cart}
+          handleCheckoutClick={this.emptyCart}
         />
         <main>
           <ProductList

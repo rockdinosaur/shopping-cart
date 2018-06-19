@@ -1,6 +1,9 @@
 import React, { Component } from 'react';
 
 class Cart extends React.Component {
+  handleCheckoutClick = () => {
+    this.props.handleCheckoutClick();
+  }
 
   render() {
     const items = this.props.cartItems.map(item => {
@@ -47,7 +50,10 @@ class Cart extends React.Component {
               </td>
             </tr>
           </table>
-          <a className={`button checkout ${hasItems ? '' : 'disabled'}`}>Checkout</a>
+          <a
+            className={`button checkout ${hasItems ? '' : 'disabled'}`}
+            onClick={this.handleCheckoutClick}
+          >Checkout</a>
         </div>
       )
   }
