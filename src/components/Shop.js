@@ -29,13 +29,35 @@ class Shop extends Component {
         quantity: 12,
         price: 13.74
       }
-    ]
-  }
+    ],
+    cart: [
+      {
+        id: 1,
+        title: 'Amazon Kindle E-reader',
+        quantity: 5,
+        price: 79.99
+      },
+    ],
+  };
+
+  addToCart = (id) => {
+    this.state.products.forEach((product) => {
+      if (product.id === id) {
+        this.setState(prevState => {
+          return {
+            cart: prevState.cart.concat(product);
+          }
+        });    
+      }
+    })
+  };
 
   render() {
     return (
       <div id="app">
-        <Header />
+        <Header 
+          cartItems={this.state.cart}
+        />
         <main>
           <ProductList />
           {/* <ProductForm /> */}
