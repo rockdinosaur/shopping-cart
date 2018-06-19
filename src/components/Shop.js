@@ -41,16 +41,39 @@ class Shop extends Component {
   };
 
   addToCart = (id) => {
-    this.state.products.forEach((product) => {
+    let updatedCart;
+
+    if (this.state.cart.some(product => product.id === id)) {
+      updatedCart = this.state.cart.map(product => {
+        if (product.id === id) {
+          return Object.assign({}, product, { quantity: product.quantity + 1 })
+        } else {
+          return product;
+        }
+      })
+    } else {
+      const product = this.state.products.filter(p => p.id === id)[0];
+      const productToAdd = Object.assign({}, product, { quantity: 1 });
+      updatedCart = this.state.cart.concat(productToAdd);
+    }
+
+    const updatedProducts = this.state.products.map((product) => {
       if (product.id === id) {
-        this.setState(prevState => {
-          return {
-            cart: prevState.cart.concat(product)
-          }
+        return Object.assign({}, product, {
+          quantity: product.quantity - 1,
         });
+      } else {
+        return product;
+      }
+    });
+
+    this.setState(prevState => {
+      return {
+        cart: updatedCart,
+        products: updatedProducts
       }
     })
-  };
+  }
 
   render() {
     return (

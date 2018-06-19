@@ -3,7 +3,7 @@ import React, { Component } from 'react';
 class Cart extends React.Component {
 
   render() {
-    let items = this.props.cartItems.map(item => {
+    const items = this.props.cartItems.map(item => {
       return (
         <tr>
           <td>{item.title}</td>
@@ -12,6 +12,13 @@ class Cart extends React.Component {
         </tr>
       )
     });
+
+    let total = this.props
+                .cartItems
+                .reduce((total, item) => {
+                  return total + item.quantity * item.price
+                }, 0);
+    total = total.toFixed(2);
 
     if (this.props.cartItems.length > 0) {
       return (
@@ -25,7 +32,7 @@ class Cart extends React.Component {
               {items}
               <tr>
                 <td colspan="3" class="total">
-                  Total: ${this.props.cartItems.reduce((total, item) => total + item.quantity * item.price, 0)}
+                  Total: ${total}
                 </td>
               </tr>
             </table>

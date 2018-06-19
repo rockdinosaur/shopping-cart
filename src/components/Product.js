@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
 
 class Product extends Component {
-  handleAddToCart() {
-    this.props.onAddToCart(this.props.id);
+  handleAddToCart = () => {
+    this.props.onAddToCartClick(this.props.id);
   }
 
   render() {
