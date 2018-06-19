@@ -45,9 +45,9 @@ class Shop extends Component {
       if (product.id === id) {
         this.setState(prevState => {
           return {
-            cart: prevState.cart.concat(product);
+            cart: prevState.cart.concat(product)
           }
-        });    
+        });
       }
     })
   };
@@ -55,7 +55,7 @@ class Shop extends Component {
   render() {
     return (
       <div id="app">
-        <Header 
+        <Header
           cartItems={this.state.cart}
         />
         <main>
