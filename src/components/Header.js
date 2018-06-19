@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import Cart from './Cart';
 
-class Header extends React.Component {
+class Header extends Component {
   render() {
     return (
       <header>

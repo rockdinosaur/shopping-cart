@@ -59,7 +59,10 @@ class Shop extends Component {
           cartItems={this.state.cart}
         />
         <main>
-          <ProductList />
+          <ProductList
+            products={this.state.products}
+            onAddToCartClick={this.addToCart}
+          />
           {/* <ProductForm /> */}
         </main>
       </div>

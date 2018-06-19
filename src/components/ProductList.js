@@ -1,22 +1,24 @@
 import React, { Component } from 'react';
 
-class ProductList extends React.Component {
+import Product from './Product';
+
+class ProductList extends Component {
   render() {
+    const products = this.props.products.map(product => {
+      return <Product
+        key={`product-${product.id}`}
+        id={product.id}
+        title={product.title}
+        quantity={product.quantity}
+        price={product.price}
+        onAddToCartClick={this.props.onAddToCartClick}
+      />
+    });
+
     return (
       <div class="product-listing">
         <h2>Products</h2>
-        <div class="product">
-          <div class="product-details">
-            <h3>Amazon Kindle E-reader</h3>
-            <p class="price">$79.99</p>
-            <p class="quantity">5 left in stock</p>
-            <div class="actions product-actions">
-              <a class="button add-to-cart">Add to Cart</a>
-              <a class="button edit">Edit</a>
-            </div>
-            <a class="delete-button"><span>X</span></a>
-          </div>
-        </div>
+        {products}
       </div>
     )
   }
