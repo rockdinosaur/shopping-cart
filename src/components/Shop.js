@@ -51,7 +51,7 @@ class Shop extends Component {
         }
       })
     } else {
-      const product = this.state.products.filter(p => p.id === id);
+      const product = this.state.products.filter(p => p.id === id)[0];
       const productToAdd = Object.assign({}, product, {quantity: 1})
       updatedCart = this.state.cart.concat(productToAdd)
     }
