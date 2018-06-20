@@ -13,12 +13,22 @@ class Shop extends Component {
 
   addProduct = product => {
     product.id = this.state.products.length + 1;
-    console.log(product);
     this.setState(prevState => ({ products: [...this.state.products, product] }));
   }
 
   componentDidMount() {
     this.setState({ products: seedData });
+  }
+
+  deleteProduct = id => {
+    const idxToDelete = this.state.products.findIndex(product => {
+      return product.id === id;
+    })
+    const products = [...this.state.products];
+    products.splice(idxToDelete, 1);
+    this.setState(prevState => {
+      return { products };
+    })
   }
 
   getUpdatedCart = (id) => {
@@ -82,6 +92,7 @@ class Shop extends Component {
           <ProductList
             products={this.state.products}
             onAddToCartClick={this.addToCart}
+            onDeleteProduct={this.deleteProduct}
           />
           <ProductForm
             onAddProduct={this.addProduct}

@@ -12,6 +12,7 @@ class ProductList extends Component {
         quantity={product.quantity}
         price={product.price}
         onAddToCartClick={this.props.onAddToCartClick}
+        onDeleteProduct={this.props.onDeleteProduct}
       />
     });
 
