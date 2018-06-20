@@ -14,7 +14,7 @@ class Shop extends Component {
   addProduct = product => {
     product.id = this.state.products.length + 1;
     console.log(product);
-    this.setState(prevState => { products: [...this.state.products, product] })
+    this.setState(prevState => ({ products: [...this.state.products, product] }));
   }
 
   componentDidMount() {

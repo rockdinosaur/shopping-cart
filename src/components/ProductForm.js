@@ -1,95 +1,112 @@
 import React, { Component } from 'react';
-import PropTypes from 'prop-types';
 
 class ProductForm extends React.Component {
-  static propTypes = {
-
-  }
-
   state = {
     fields: {
-      productName: '',
-      productPrice: '',
-      productQuantity: '',
+      title: '',
+      price: '',
+      quantity: '',
+    },
+    fieldErrors: {}
+  }
+
+  validate = (product) => {
+    const errors = {};
+    if (!product.title) { errors.title = 'Title required.'; }
+    this.validateNumber('price', product.price, errors);
+    this.validateNumber('quantity', product.quantity, errors);
+    return errors;
+  }
+
+  validateNumber(input, value, errors) {
+    if (isNaN(value)) {
+      errors[input] = 'Must be a number';
+    } else if (value <= 0) {
+      errors[input] = 'Value entered must be greater than 0';
     }
   }
 
   onFormSubmit = (e) => {
-    const title = this.state.fields.productName;
-    const quantity = this.state.fields.productQuantity;
-    const price = this.state.fields.productPrice;
-    const productToAdd = { title, quantity, price };
-    this.props.onAddProduct(productToAdd);
-    this.setState(prevState => {
-      return {
-        fields: {
-          productName: '',
-          productPrice: '',
-          productQuantity: '',
-        }
-      }
-    });
     e.preventDefault();
+
+    const productToAdd = {};
+    productToAdd.title = this.state.fields.title;
+    productToAdd.quantity = parseInt(this.state.fields.quantity);
+    productToAdd.price = parseFloat(this.state.fields.price).toFixed(2);
+
+    const fieldErrors = this.validate(productToAdd);
+    this.setState({ fieldErrors: fieldErrors });
+    if (Object.keys(fieldErrors).length) { return; }
+
+    this.props.onAddProduct(productToAdd);
+    this.setState(prevState => ({ fields: { title: '', price: '', quantity: '' } }));
   }
 
   onInputChange = (e) => {
-    const fields = {...this.state.fields};
+    const fields = { ...this.state.fields };
     fields[e.target.name] = e.target.value;
-    this.setState(prevState => { fields })
+    this.setState(prevState => ({ fields: fields }));
   }
 
   render() {
     return (
-    <div className="add-form visible">
-      <p>
-        <a className="button add-product-button">Add A Product</a>
-      </p>
-      <h3>Add Product</h3>
-      <form onSubmit={this.onFormSubmit}>
-        <div className="input-group">
-          <label htmlFor="productName">Product Name</label>
-          <input
-            type="text"
-            name="productName"
-            id="product-name"
-            defaultValue={this.state.fields.productName}
-            onChange={this.onInputChange}
-          />
-        </div>
+      <div className="add-form visible">
+        <p>
+          <a className="button add-product-button">Add A Product</a>
+        </p>
+        <h3>Add Product</h3>
+        <form onSubmit={this.onFormSubmit}>
+          <div className="input-group">
+            <label htmlFor="title">Product Name</label>
+            <input
+              type="text"
+              name="title"
+              id="product-name"
+              value={this.state.fields.title}
+              onChange={this.onInputChange}
+            />
+          </div>
 
-        <div className="input-group">
-          <label htmlFor="productPrice">Price</label>
-          <input
-            type="text"
-            name="productPrice"
-            id="product-price"
-            defaultValue={this.state.fields.productPrice}
-            onChange={this.onInputChange}
-          />
-        </div>
+          <span style={{ color: 'red' }}>{this.state.fieldErrors.title}</span>
 
-        <div className="input-group">
-          <label htmlFor="productQuantity">Quantity</label>
-          <input
-            type="text"
-            name="productQuantity"
-            id="product-quantity"
-            defaultValue={this.state.fields.productQuantity}
-            onChange={this.onInputChange}
-          />
-        </div>
+          <div className="input-group">
+            <label htmlFor="price">Price</label>
+            <input
+              type="text"
+              name="price"
+              id="product-price"
+              value={this.state.fields.price}
+              onChange={this.onInputChange}
+            />
+          </div>
 
-        <div className="actions form-actions">
-          <input
-            type="submit"
-            className="button"
-            value="Add"
-          />
-          <a className="button">Cancel</a>
-        </div>
-      </form>
-    </div>
-  )}
+          <span style={{ color: 'red' }}>{this.state.fieldErrors.price}</span>
+
+          <div className="input-group">
+            <label htmlFor="quantity">Quantity</label>
+            <input
+              type="text"
+              name="quantity"
+              id="product-quantity"
+              value={this.state.fields.quantity}
+              onChange={this.onInputChange}
+            />
+          </div>
+
+          <span style={{ color: 'red' }}>{this.state.fieldErrors.quantity}</span>
+
+          <div className="actions form-actions">
+            <input
+              type="submit"
+              className="button"
+              value="Add"
+            />
+            <a className="button">Cancel</a>
+          </div>
+        </form>
+      </div>
+    )
+  }
 }
 
 export default ProductForm;
