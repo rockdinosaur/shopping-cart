@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import Header from './Header';
 import ProductList from './ProductList';
+import ProductForm from './ProductForm';
 
 import seedData from './../seedData';
 
@@ -9,6 +10,12 @@ class Shop extends Component {
     cart: [],
     products: []
   };
+
+  addProduct = product => {
+    product.id = this.state.products.length + 1;
+    console.log(product);
+    this.setState(prevState => ({ products: [...this.state.products, product] }));
+  }
 
   componentDidMount() {
     this.setState({ products: seedData });
@@ -76,7 +83,9 @@ class Shop extends Component {
             products={this.state.products}
             onAddToCartClick={this.addToCart}
           />
-          {/* <ProductForm /> */}
+          <ProductForm
+            onAddProduct={this.addProduct}
+          />
         </main>
       </div>
     );
