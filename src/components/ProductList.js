@@ -7,12 +7,10 @@ class ProductList extends Component {
     const products = this.props.products.map(product => {
       return <Product
         key={`product-${product.id}`}
-        id={product.id}
-        title={product.title}
-        quantity={product.quantity}
-        price={product.price}
+        product={product}
         onAddToCartClick={this.props.onAddToCartClick}
         onDeleteProduct={this.props.onDeleteProduct}
+        onEditProduct={this.props.onEditProduct}
       />
     });
 
