@@ -16,19 +16,20 @@ class Shop extends Component {
 
   getUpdatedCart = (id) => {
     let updatedCart;
+    const productIdx = this.state.cart.findIndex(p => p.id === id);
 
-    if (this.state.cart.some(product => product.id === id)) {
-      updatedCart = this.state.cart.map(product => {
-        if (product.id === id) {
-          return Object.assign({}, product, { quantity: product.quantity + 1 })
-        } else {
-          return product;
-        }
-      })
+    if (productIdx !== -1) {
+      const product = {
+        ...this.state.cart[productIdx]
+      }
+
+      product.quantity += 1;
+      updatedCart = [...this.state.cart];
+      updatedCart[productIdx] = product;
     } else {
       const product = this.state.products.filter(p => p.id === id)[0];
       const productToAdd = Object.assign({}, product, { quantity: 1 });
-      updatedCart = this.state.cart.concat(productToAdd);
+      updatedCart = [...this.state.cart, productToAdd];
     }
 
     return updatedCart;
