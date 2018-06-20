@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 
-class Cart extends React.Component {
+class Cart extends Component {
   handleCheckoutClick = () => {
     this.props.handleCheckoutClick();
   }
@@ -18,8 +18,16 @@ class Cart extends React.Component {
     });
 
     const hasItems = this.props.cartItems.length > 0;
+
+    let total = this.props
+      .cartItems
+      .reduce((total, item) => {
+        return total + item.quantity * item.price
+      }, 0);
+    total = total.toFixed(2);
+
     const itemsTable = (
-      <div>
+      <table className="cart-items">
         <thead>
           <tr>
             <th>Item</th>
@@ -29,33 +37,32 @@ class Cart extends React.Component {
         </thead>
         <tbody>
           {items}
+          <tr>
+            <td colSpan="3" className="total">
+              Total: ${total}
+            </td>
+          </tr>
         </tbody>
+      </table>
+    );
+
+    const noItemsTable = (
+      <div>
+        <p>Your cart is empty</p>
+        <p>Total: $0</p>
       </div>
     );
-    let total = this.props
-                .cartItems
-                .reduce((total, item) => {
-                  return total + item.quantity * item.price
-                }, 0);
-    total = total.toFixed(2);
 
     return (
-        <div className='cart'>
-          <h2>Your Cart</h2>
-          <table class="cart-items">
-            {hasItems ? itemsTable : (<p>Your cart is empty</p>)}
-            <tr>
-              <td colspan="3" class="total">
-                Total: ${total}
-              </td>
-            </tr>
-          </table>
-          <a
-            className={`button checkout ${hasItems ? '' : 'disabled'}`}
-            onClick={this.handleCheckoutClick}
-          >Checkout</a>
-        </div>
-      )
+      <div className='cart'>
+        <h2>Your Cart</h2>
+        {hasItems ? itemsTable : noItemsTable}
+        <a
+          className={`button checkout ${hasItems ? '' : 'disabled'}`}
+          onClick={this.handleCheckoutClick}
+        >Checkout</a>
+      </div>
+    )
   }
 }
 

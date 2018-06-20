@@ -9,19 +9,19 @@ class Product extends Component {
     const addToCartClasses = `button add-to-cart ${this.props.quantity ? '' : 'disabled'}`;
 
     return (
-      <div class="product">
-        <div class="product-details">
+      <div className="product">
+        <div className="product-details">
           <h3>{this.props.title}</h3>
-          <p class="price">{this.props.price}</p>
-          <p class="quantity">{this.props.quantity} left in stock</p>
-          <div class="actions product-actions">
+          <p className="price">{this.props.price}</p>
+          <p className="quantity">{this.props.quantity} left in stock</p>
+          <div className="actions product-actions">
             <a
-              class={addToCartClasses}
+              className={addToCartClasses}
               onClick={this.handleAddToCart}
             >Add to Cart</a>
-            <a class="button edit">Edit</a>
+            <a className="button edit">Edit</a>
           </div>
-          <a class="delete-button"><span>X</span></a>
+          <a className="delete-button"><span>X</span></a>
         </div>
       </div>
     );

@@ -2,10 +2,6 @@ import React, { Component } from 'react';
 import Cart from './Cart';
 
 class Header extends Component {
-  handleCheckoutClick = () => {
-    this.props.handleCheckoutClick;
-  }
-
   render() {
     return (
       <header>
