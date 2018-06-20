@@ -26,9 +26,7 @@ class Shop extends Component {
     })
     const products = [...this.state.products];
     products.splice(idxToDelete, 1);
-    this.setState(prevState => {
-      return { products };
-    })
+    this.setState(prevState => ({ products }));
   }
 
   getUpdatedCart = (id) => {
@@ -81,6 +79,10 @@ class Shop extends Component {
     })
   }
 
+  editProduct = (updatedProduct, id) => {
+
+  }
+
   render() {
     return (
       <div id="app">
@@ -93,9 +95,11 @@ class Shop extends Component {
             products={this.state.products}
             onAddToCartClick={this.addToCart}
             onDeleteProduct={this.deleteProduct}
+            onEditProduct={this.editProduct}
           />
           <ProductForm
             onAddProduct={this.addProduct}
+            mode='add'
           />
         </main>
       </div>
