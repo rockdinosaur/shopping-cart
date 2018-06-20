@@ -45,9 +45,8 @@ class Shop extends Component {
       }
     });
   }
+
   addToCart = (id) => {
-
-
     this.setState(prevState => {
       return {
         cart: this.getUpdatedCart(id),
