@@ -5,6 +5,10 @@ class Product extends Component {
     this.props.quantity && this.props.onAddToCartClick(this.props.id);
   }
 
+  handleDeleteProduct = () => {
+    this.props.onDeleteProduct(this.props.id);
+  }
+
   render() {
     const addToCartClasses = `button add-to-cart ${this.props.quantity ? '' : 'disabled'}`;
 
@@ -21,7 +25,10 @@ class Product extends Component {
             >Add to Cart</a>
             <a className="button edit">Edit</a>
           </div>
-          <a className="delete-button"><span>X</span></a>
+          <a
+            className="delete-button"
+            onClick={this.handleDeleteProduct}
+          ><span>X</span></a>
         </div>
       </div>
     );
