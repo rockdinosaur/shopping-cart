@@ -20,7 +20,7 @@ class Shop extends Component {
   componentDidMount() {
     this.setState({ products: seedData });
   }
-
+// test
   getUpdatedCart = (id) => {
     let updatedCart;
     const productIdx = this.state.cart.findIndex(p => p.id === id);
