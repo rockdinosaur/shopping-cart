@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 
 class Cart extends Component {
   handleCheckoutClick = () => {
-    this.props.handleCheckoutClick();
+    this.props.cartItems.length && this.props.handleCheckoutClick();
   }
 
   render() {
