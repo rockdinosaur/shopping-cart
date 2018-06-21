@@ -8,7 +8,7 @@ class Product extends Component {
   }
 
   handleAddToCart = () => {
-    this.props.quantity && this.props.onAddToCartClick(this.props.product.id);
+    this.props.product.quantity && this.props.onAddToCartClick(this.props.product.id);
   }
 
   handleDeleteProduct = () => {
