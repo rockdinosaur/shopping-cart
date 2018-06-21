@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import Header from './Header';
 import ProductList from './ProductList';
+import ProductForm from './ProductForm';
 
 import seedData from './../seedData';
 
@@ -10,8 +11,22 @@ class Shop extends Component {
     products: []
   };
 
+  addProduct = product => {
+    product.id = this.state.products.length + 1;
+    this.setState(prevState => ({ products: [...this.state.products, product] }));
+  }
+
   componentDidMount() {
     this.setState({ products: seedData });
+  }
+
+  deleteProduct = id => {
+    const idxToDelete = this.state.products.findIndex(product => {
+      return product.id === id;
+    })
+    const products = [...this.state.products];
+    products.splice(idxToDelete, 1);
+    this.setState(prevState => ({ products }));
   }
 
   getUpdatedCart = (id) => {
@@ -64,6 +79,18 @@ class Shop extends Component {
     })
   }
 
+  editProduct = (updatedProduct, id) => {
+    const updatedProducts = this.state.products.map((product) => {
+      if (product.id === id) {
+        return Object.assign({}, product, updatedProduct);
+      } else {
+        return product;
+      }
+    });
+
+    this.setState({ products: updatedProducts });
+  }
+
   render() {
     return (
       <div id="app">
@@ -75,8 +102,13 @@ class Shop extends Component {
           <ProductList
             products={this.state.products}
             onAddToCartClick={this.addToCart}
+            onDeleteProduct={this.deleteProduct}
+            onEditProduct={this.editProduct}
           />
-          {/* <ProductForm /> */}
+          <ProductForm
+            onAddProduct={this.addProduct}
+            mode='add'
+          />
         </main>
       </div>
     );
