@@ -1,0 +1,100 @@
+We need both Jest and Enzyme
+
+We already have Jest installed
+
+*.test.js or *.spec.js //can go anywhere or in __test__ folder
+
+toBe() (same as ===)
+toEqual() (compare two diff objects)
+
+describe('My test suite', () => {
+  describe('my function', () => {
+    let/const/var === (scoped to describe)
+
+    it('`true` should be `true`', () => {
+    expect(true).toBe(true);
+    });
+    it('`false` should be `false`', () => {
+    expect(false).toBe(false);
+    });  
+    })
+});
+
+describe('Modash', () => {
+  describe('`truncate()`', () => {
+  // ... `truncate()` specs
+  });
+  describe('`capitalize()`', () => {
+  // ... `capitalize()` specs
+  });
+  describe('`camelCase()`', () => {
+  // ... `camelCase()` specs
+});
+
+inside of package.json:
+  "scripts": {
+    "test": "jest"
+  },
+
+"npm test" ("yarn test"?)
+
+------- React testing
+
+Enzyme library for shallow rendering -- Returns an EnzymeWrapper object
+
+Unclear if we need to config for Enzyme (pg. 308-310):
+  add 'enzyme', 'react-test-renderer', 'enzyme-adapter-react-16' as dependencies to package.json
+  npm i --save-dev enzyme react-test-renderer enzyme-adapter-react-16
+
+test file e.g. *.test.js
+
+import React from 'react';
+import { shallow } from 'enzyme';
+
+with correct config, should just need 'npm test'
+
+
+
+Look at fullstack-react-code/testing/react-basics/complete
+
+//test that table has a header of "Items":
+
+describe('App', () => {
+  it('should have the `th` "Items"', () => {
+    const wrapper = shallow(
+      <App />
+    );
+    expect(
+      wrapper.contains(<th>Items</th>) ==> contains() takes JSX
+    ).toBe(true);
+  });
+});
+
+other tests:
+containsMatchingElement() ==> looser spec
+
+find() ==> CSS selector
+  behaves likes jQuery, returns array of matched elements
+  const button = wrapper.find('button').first();
+
+props() ==> test props
+  
+  expect(
+    button.props().disabled
+  ).toBe(true);
+
+
+beforeEach() will run before each it block
+
+describe('App', () => {
+  let wrapper;
+  beforeEach(() => {
+    wrapper = shallow(
+      <App />
+    );
+  });
+
+simulate() within beforeEach() to set up a fake user interaction with 'change', 'click', 'submit' etc
+
+toContain() asserts that an array (e.g. in state) contains something
+
