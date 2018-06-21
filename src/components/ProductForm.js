@@ -22,6 +22,14 @@ class ProductForm extends React.Component {
     }
   }
 
+  handleFormCancel = () => {
+    if (this.props.mode === 'edit') {
+      this.props.onFormCancel();
+    } else {
+      this.setState(prevState => ({ fields: { title: '', price: '', quantity: '' } }));
+    }
+  }
+
   validate = (product) => {
     const errors = {};
     if (!product.title) { errors.title = 'Title required.'; }
@@ -55,6 +63,7 @@ class ProductForm extends React.Component {
       this.setState(prevState => ({ fields: { title: '', price: '', quantity: '' } }));
     } else {
       this.props.onEditProduct(product, this.props.product.id);
+      this.props.onFormCancel();
     }
   }
 
@@ -115,10 +124,12 @@ class ProductForm extends React.Component {
             <input
               type="submit"
               className="button"
-              value={this.props.mode === 'add' ? 'Add' : 'Edit'}
+              value={this.props.mode === 'add' ? 'Add' : 'Update'}
             />
-            {/* Still need to do */}
-            <a className="button">Cancel</a>
+            <a
+              className="button"
+              onClick={this.handleFormCancel}
+            >Cancel</a>
           </div>
         </form>
       </div>
