@@ -58,8 +58,13 @@ class ProductForm extends React.Component {
     this.setState({ fieldErrors: fieldErrors });
     if (Object.keys(fieldErrors).length) { return; }
 
-    this.props.onAddProduct(productToAdd);
-    this.setState(prevState => ({ fields: { title: '', price: '', quantity: '' } }));
+    if (this.props.mode === 'add') {
+      this.props.onAddProduct(product);
+      this.setState(prevState => ({ fields: { title: '', price: '', quantity: '' } }));
+    } else {
+      this.props.onEditProduct(product, this.props.product.id);
+      this.props.onFormCancel();
+    }
   }
 
   onInputChange = (e) => {
@@ -119,14 +124,12 @@ class ProductForm extends React.Component {
             <input
               type="submit"
               className="button"
-              value="Add"
+              value={this.props.mode === 'add' ? 'Add' : 'Update'}
             />
             <a
               className="button"
               onClick={this.handleFormCancel}
-              >
-              Cancel
-            </a>
+            >Cancel</a>
           </div>
         </form>
       </div>

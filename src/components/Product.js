@@ -27,6 +27,10 @@ class Product extends Component {
     this.setState({ toggleEditForm: true });
   }
 
+  handleEditCancel = () => {
+    this.setState({ toggleEditForm: false });
+  }
+
   render() {
     const addToCartClasses = `button add-to-cart ${this.props.product.quantity ? '' : 'disabled'}`;
 
@@ -56,6 +60,7 @@ class Product extends Component {
           <ProductForm
             mode='edit'
             product={this.props.product}
+            onFormCancel={this.handleEditCancel}
             onEditProduct={this.props.onEditProduct}
             onFormCancel={this.formCancel}
           />}
