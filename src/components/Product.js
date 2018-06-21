@@ -7,8 +7,16 @@ class Product extends Component {
     toggleEditForm: false
   }
 
+  formCancel = () => {
+    this.setState(prevState => {
+      return {
+        toggleEditForm: false
+      }
+    })
+  }
+
   handleAddToCart = () => {
-    this.props.quantity && this.props.onAddToCartClick(this.props.product.id);
+    this.props.product.quantity && this.props.onAddToCartClick(this.props.product.id);
   }
 
   handleDeleteProduct = () => {
@@ -49,6 +57,7 @@ class Product extends Component {
             mode='edit'
             product={this.props.product}
             onEditProduct={this.props.onEditProduct}
+            onFormCancel={this.formCancel}
           />}
       </div>
     );

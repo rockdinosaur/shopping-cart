@@ -22,6 +22,14 @@ class ProductForm extends React.Component {
     }
   }
 
+  handleFormCancel = () => {
+    if (this.props.mode === 'edit') {
+      this.props.onFormCancel();
+    } else {
+      this.setState(prevState => ({ fields: { title: '', price: '', quantity: '' } }));
+    }
+  }
+
   validate = (product) => {
     const errors = {};
     if (!product.title) { errors.title = 'Title required.'; }
@@ -41,21 +49,17 @@ class ProductForm extends React.Component {
   onFormSubmit = (e) => {
     e.preventDefault();
 
-    const product = {};
-    product.title = this.state.fields.title;
-    product.quantity = parseInt(this.state.fields.quantity);
-    product.price = parseFloat(this.state.fields.price).toFixed(2);
+    const productToAdd = {};
+    productToAdd.title = this.state.fields.title;
+    productToAdd.quantity = parseInt(this.state.fields.quantity);
+    productToAdd.price = parseFloat(this.state.fields.price).toFixed(2);
 
-    const fieldErrors = this.validate(product);
+    const fieldErrors = this.validate(productToAdd);
     this.setState({ fieldErrors: fieldErrors });
     if (Object.keys(fieldErrors).length) { return; }
 
-    if (this.props.mode === 'add') {
-      this.props.onAddProduct(product);
-      this.setState(prevState => ({ fields: { title: '', price: '', quantity: '' } }));
-    } else {
-      this.props.onEditProduct(product, this.props.product.id);
-    }
+    this.props.onAddProduct(productToAdd);
+    this.setState(prevState => ({ fields: { title: '', price: '', quantity: '' } }));
   }
 
   onInputChange = (e) => {
@@ -67,10 +71,10 @@ class ProductForm extends React.Component {
   render() {
     return (
       <div className="add-form visible">
-        {/* <p>
+        <p>
           <a className="button add-product-button">Add A Product</a>
-        </p> */}
-        <h3>{this.props.mode === 'add' ? 'Add' : 'Edit'} Product</h3>
+        </p>
+        <h3>Add Product</h3>
         <form onSubmit={this.onFormSubmit}>
           <div className="input-group">
             <label htmlFor="title">Product Name</label>
@@ -115,10 +119,14 @@ class ProductForm extends React.Component {
             <input
               type="submit"
               className="button"
-              value={this.props.mode === 'add' ? 'Add' : 'Edit'}
+              value="Add"
             />
-            {/* Still need to do */}
-            <a className="button">Cancel</a>
+            <a
+              className="button"
+              onClick={this.handleFormCancel}
+              >
+              Cancel
+            </a>
           </div>
         </form>
       </div>
