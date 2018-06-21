@@ -49,12 +49,12 @@ class ProductForm extends React.Component {
   onFormSubmit = (e) => {
     e.preventDefault();
 
-    const product = {};
-    product.title = this.state.fields.title;
-    product.quantity = parseInt(this.state.fields.quantity);
-    product.price = parseFloat(this.state.fields.price).toFixed(2);
+    const productToAdd = {};
+    productToAdd.title = this.state.fields.title;
+    productToAdd.quantity = parseInt(this.state.fields.quantity);
+    productToAdd.price = parseFloat(this.state.fields.price).toFixed(2);
 
-    const fieldErrors = this.validate(product);
+    const fieldErrors = this.validate(productToAdd);
     this.setState({ fieldErrors: fieldErrors });
     if (Object.keys(fieldErrors).length) { return; }
 
@@ -76,10 +76,10 @@ class ProductForm extends React.Component {
   render() {
     return (
       <div className="add-form visible">
-        {/* <p>
+        <p>
           <a className="button add-product-button">Add A Product</a>
-        </p> */}
-        <h3>{this.props.mode === 'add' ? 'Add' : 'Edit'} Product</h3>
+        </p>
+        <h3>Add Product</h3>
         <form onSubmit={this.onFormSubmit}>
           <div className="input-group">
             <label htmlFor="title">Product Name</label>
