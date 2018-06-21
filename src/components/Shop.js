@@ -80,7 +80,15 @@ class Shop extends Component {
   }
 
   editProduct = (updatedProduct, id) => {
+    const updatedProducts = this.state.products.map((product) => {
+      if (product.id === id) {
+        return Object.assign({}, product, updatedProduct);
+      } else {
+        return product;
+      }
+    });
 
+    this.setState({ products: updatedProducts });
   }
 
   render() {
