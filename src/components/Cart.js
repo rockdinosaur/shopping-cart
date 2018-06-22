@@ -1,12 +1,25 @@
 import React, { Component } from 'react';
+import store from '../store';
 
 class Cart extends Component {
   handleCheckoutClick = () => {
-    this.props.cartItems.length && this.props.handleCheckoutClick();
+    const checkoutAction = {
+      type: 'CHECKOUT'
+    }
+    this.props.cartItems.length && store.dispatch(checkoutAction);
+    //this.props.cartItems.length && this.props.handleCheckoutClick();
   }
 
   render() {
-    const items = this.props.cartItems.map(item => {
+    const itemsWithData = store.getState().cart.map(item => {
+      const match = store.getState().products.filter(product => {
+        return product.id === item.id;
+      })[0];
+
+      return Object.assign(match, item);
+    });
+
+    const items = itemsWithData.map(item => {
       return (
         <CartItem
           key={'key-' + item.id}
@@ -17,10 +30,9 @@ class Cart extends Component {
       )
     });
 
-    const hasItems = this.props.cartItems.length > 0;
+    const hasItems = store.getState().cart.length > 0;
 
-    let total = this.props
-      .cartItems
+    let total = itemsWithData
       .reduce((total, item) => {
         return total + item.quantity * item.price
       }, 0);

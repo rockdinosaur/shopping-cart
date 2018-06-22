@@ -3,9 +3,29 @@ import seedData from './seedData';
 import uuid from 'uuid';
 
 const reducer = combineReducers({
-  // cart:
-  products: productsReducer,
+  cart: cartReducer,
+  products: productsReducer
 })
+
+function cartReducer(cart = [], action) {
+  if (action.type === 'ADD_TO_CART') {
+    if (cart.find(product => product.id === action.id)) {
+      return cart.map(product => {
+        if (product.id === action.id) {
+          return {...product, quantity: product.quantity + 1};
+        } else {
+          return product;
+        }
+      });
+    } else {
+      return cart.concat({ quantity: 1, id: action.id });
+    }
+  } else if (action.type === 'CHECKOUT') {
+    return [];
+  } else {
+    return cart;
+  }
+}
 
 function productsReducer(products = [], action) { // action: id, type, productData
   if (action.type === 'ADD_PRODUCT') {
@@ -19,6 +39,22 @@ function productsReducer(products = [], action) { // action: id, type, productDa
                             [...products.slice(idxToDelete + 1)]
     )
     return updatedProducts;
+  } else if (action.type === 'EDIT_PRODUCT') {
+    return products.map(product => {
+      if (product.id === action.id) {
+        return Object.assign(product, action.productData);
+      } else {
+        return product;
+      }
+    })
+  } else if (action.type === 'ADD_TO_CART') {
+    return products.map(product => {
+      if (product.id === action.id) {
+        return Object.assign(product, { stock: product.stock - 1 });
+      } else {
+        return product;
+      }
+    })
   } else {
     return products;
   }

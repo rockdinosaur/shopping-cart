@@ -8,15 +8,18 @@ class Product extends Component {
   }
 
   handleAddToCart = () => {
-    this.props.product.quantity && this.props.onAddToCartClick(this.props.product.id);
+    const addToCartAction = {
+      type: 'ADD_TO_CART',
+      id: this.props.product.id,
+    }
+    this.props.product.stock && store.dispatch(addToCartAction);
   }
 
   handleDeleteProduct = () => {
-    const deleteAction = {
+    store.dispatch({
       type: "DELETE_PRODUCT",
       id: this.props.product.id,
-    }
-    store.dispatch(deleteAction);
+    });
   }
 
   handleEditClick = () => {
@@ -28,14 +31,14 @@ class Product extends Component {
   }
 
   render() {
-    const addToCartClasses = `button add-to-cart ${this.props.product.quantity ? '' : 'disabled'}`;
+    const addToCartClasses = `button add-to-cart ${this.props.product.stock ? '' : 'disabled'}`;
 
     return (
       <div className="product">
         <div className="product-details">
           <h3>{this.props.product.title}</h3>
           <p className="price">{this.props.product.price}</p>
-          <p className="quantity">{this.props.product.quantity} left in stock</p>
+        <p className="quantity">{this.props.product.stock} left in stock</p>
           <div className="actions product-actions">
             <a
               className={addToCartClasses}
