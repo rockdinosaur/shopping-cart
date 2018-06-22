@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
-
 import ProductForm from './ProductForm';
+import store from '../store';
 
 class Product extends Component {
   state = {
@@ -12,7 +12,11 @@ class Product extends Component {
   }
 
   handleDeleteProduct = () => {
-    this.props.onDeleteProduct(this.props.product.id);
+    const deleteAction = {
+      type: "DELETE_PRODUCT",
+      id: this.props.product.id,
+    }
+    store.dispatch(deleteAction);
   }
 
   handleEditClick = () => {
