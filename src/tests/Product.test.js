@@ -17,7 +17,7 @@ describe('Products', () => {
   beforeEach(() => {
     product = shallow(
       <Product />
-    );   
+    );
   });
 
   it('should have an edit button', () => {
@@ -35,10 +35,10 @@ describe('Products', () => {
 
      it('should have quantity 0', () => {
       expect(product.state('quantity')).toBe(0);
-    }); 
+    });
 
      it('should have class diabled', () => {
       expect(product.find('.add-to-cart').hasClass('disabled')).toBe(true);
-    });    
+    });
   });
 });

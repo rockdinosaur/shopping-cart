@@ -7,7 +7,7 @@ class ProductForm extends React.Component {
     fields: {
       title: '',
       price: '',
-      quantity: '',
+      stock: '',
     },
     fieldErrors: {}
   }
@@ -18,7 +18,7 @@ class ProductForm extends React.Component {
         fields: {
           title: this.props.product.title,
           price: this.props.product.price,
-          quantity: this.props.product.quantity
+          stock: this.props.product.stock
         }
       });
     }
@@ -28,7 +28,7 @@ class ProductForm extends React.Component {
     if (this.props.mode === 'edit') {
       this.props.onFormCancel();
     } else {
-      this.setState(prevState => ({ fields: { title: '', price: '', quantity: '' } }));
+      this.setState(prevState => ({ fields: { title: '', price: '', stock: '' } }));
     }
   }
 
@@ -36,7 +36,7 @@ class ProductForm extends React.Component {
     const errors = {};
     if (!product.title) { errors.title = 'Title required.'; }
     this.validateNumber('price', product.price, errors);
-    this.validateNumber('quantity', product.quantity, errors);
+    this.validateNumber('stock', product.stock, errors);
     return errors;
   }
 
@@ -53,7 +53,7 @@ class ProductForm extends React.Component {
 
     const product = {};
     product.title = this.state.fields.title;
-    product.quantity = parseInt(this.state.fields.quantity);
+    product.stock = parseInt(this.state.fields.stock);
     product.price = parseFloat(this.state.fields.price).toFixed(2);
 
     const fieldErrors = this.validate(product);
@@ -66,11 +66,13 @@ class ProductForm extends React.Component {
         productData: product,
       }
       store.dispatch(addAction);
-
-      // this.props.onAddProduct(product);
-      // this.setState(prevState => ({ fields: { title: '', price: '', quantity: '' } }));
     } else {
-      this.props.onEditProduct(product, this.props.product.id);
+      const editAction = {
+        type: 'EDIT_PRODUCT',
+        productData: product,
+        id: this.props.product.id
+      }
+      store.dispatch(editAction);
       this.props.onFormCancel();
     }
   }
@@ -84,9 +86,6 @@ class ProductForm extends React.Component {
   render() {
     return (
       <div className="add-form visible">
-        {/* <p>
-          <a className="button add-product-button">Add A Product</a>
-        </p> */}
         <h3>{this.props.mode === 'add' ? 'Add' : 'Edit'} Product</h3>
         <form onSubmit={this.onFormSubmit}>
           <div className="input-group">
@@ -119,14 +118,14 @@ class ProductForm extends React.Component {
             <label htmlFor="quantity">Quantity</label>
             <input
               type="text"
-              name="quantity"
+              name="stock"
               id="product-quantity"
-              value={this.state.fields.quantity}
+              value={this.state.fields.stock}
               onChange={this.onInputChange}
             />
           </div>
 
-          <span style={{ color: 'red' }}>{this.state.fieldErrors.quantity}</span>
+          <span style={{ color: 'red' }}>{this.state.fieldErrors.stock}</span>
 
           <div className="actions form-actions">
             <input
