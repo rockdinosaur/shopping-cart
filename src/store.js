@@ -22,6 +22,8 @@ function cartReducer(cart = [], action) {
     }
   } else if (action.type === 'CHECKOUT') {
     return [];
+  } else if (action.type === 'DELETE_PRODUCT') {
+    return cart.filter(product => product.id !== action.id);
   } else {
     return cart;
   }
