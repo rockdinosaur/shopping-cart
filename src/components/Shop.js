@@ -2,14 +2,26 @@ import React, { Component } from 'react';
 import Header from './Header';
 import ProductList from './ProductList';
 import ProductForm from './ProductForm';
-
 import seedData from './../seedData';
+import uuid from 'uuid';
+import store from '../store';
 
+
+// function cartReducer(state, action) {
+//   if (action.type === 'ADD_TO_CART') {
+//     const updatedCart = state.cart.concat(action.cartItem);
+//     return {
+//       cart: updatedCart
+//     }
+//   } else {
+//     return state;
+//   }
+// }
 class Shop extends Component {
   state = {
     cart: [],
-    products: []
-  };
+    products: seedData
+  }
 
   addProduct = product => {
     product.id = this.state.products.length + 1;
@@ -18,15 +30,7 @@ class Shop extends Component {
 
   componentDidMount() {
     this.setState({ products: seedData });
-  }
-
-  deleteProduct = id => {
-    const idxToDelete = this.state.products.findIndex(product => {
-      return product.id === id;
-    })
-    const products = [...this.state.products];
-    products.splice(idxToDelete, 1);
-    this.setState(prevState => ({ products }));
+    store.subscribe(() => this.forceUpdate());
   }
 
   getUpdatedCart = (id) => {
@@ -100,9 +104,8 @@ class Shop extends Component {
         />
         <main>
           <ProductList
-            products={this.state.products}
+            products={store.getState().products}
             onAddToCartClick={this.addToCart}
-            onDeleteProduct={this.deleteProduct}
             onEditProduct={this.editProduct}
           />
           <ProductForm
