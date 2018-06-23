@@ -1,8 +1,7 @@
 import React, { Component } from 'react';
-import { createStore, combineReducers } from 'redux';
 import store from '../store'
 
-class ProductForm extends React.Component {
+class ProductForm extends Component {
   state = {
     fields: {
       title: '',
@@ -28,7 +27,7 @@ class ProductForm extends React.Component {
     if (this.props.mode === 'edit') {
       this.props.onFormCancel();
     } else {
-      this.setState(prevState => ({ fields: { title: '', price: '', stock: '' } }));
+      this.setState(prevState => ({ fields: { title: '', price: '', stock: '' }, fieldErrors: {} }));
     }
   }
 
@@ -53,7 +52,7 @@ class ProductForm extends React.Component {
 
     const product = {};
     product.title = this.state.fields.title;
-    product.stock = parseInt(this.state.fields.stock);
+    product.stock = Number(this.state.fields.stock);
     product.price = parseFloat(this.state.fields.price).toFixed(2);
 
     const fieldErrors = this.validate(product);
@@ -66,6 +65,7 @@ class ProductForm extends React.Component {
         productData: product,
       }
       store.dispatch(addAction);
+      this.setState(prevState => ({ fields: { title: '', price: '', stock: '' }, fieldErrors: {} }));
     } else {
       const editAction = {
         type: 'EDIT_PRODUCT',

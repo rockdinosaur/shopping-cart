@@ -2,17 +2,12 @@ import { createStore, combineReducers } from 'redux';
 import seedData from './seedData';
 import uuid from 'uuid';
 
-const reducer = combineReducers({
-  cart: cartReducer,
-  products: productsReducer
-})
-
 function cartReducer(cart = [], action) {
   if (action.type === 'ADD_TO_CART') {
     if (cart.find(product => product.id === action.id)) {
       return cart.map(product => {
         if (product.id === action.id) {
-          return {...product, quantity: product.quantity + 1};
+          return { ...product, quantity: product.quantity + 1 };
         } else {
           return product;
         }
@@ -31,16 +26,12 @@ function cartReducer(cart = [], action) {
 
 function productsReducer(products = [], action) { // action: id, type, productData
   if (action.type === 'ADD_PRODUCT') {
-    const product = {...action.productData};
+    const product = { ...action.productData };
     product.id = uuid.v4();
     const updatedProducts = products.concat(product);
     return updatedProducts;
   } else if (action.type === 'DELETE_PRODUCT') {
-    const idxToDelete = products.findIndex(product => product.id === action.id)
-    const updatedProducts = [...products.slice(0, idxToDelete)].concat(
-                            [...products.slice(idxToDelete + 1)]
-    )
-    return updatedProducts;
+    return products.filter(product => product.id !== action.id);
   } else if (action.type === 'EDIT_PRODUCT') {
     return products.map(product => {
       if (product.id === action.id) {
@@ -61,6 +52,11 @@ function productsReducer(products = [], action) { // action: id, type, productDa
     return products;
   }
 }
+
+const reducer = combineReducers({
+  cart: cartReducer,
+  products: productsReducer
+})
 
 const initialState = {
   cart: [],

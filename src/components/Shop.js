@@ -2,13 +2,12 @@ import React, { Component } from 'react';
 import Header from './Header';
 import ProductList from './ProductList';
 import ProductForm from './ProductForm';
-import seedData from './../seedData';
-import uuid from 'uuid';
+// import seedData from './../seedData';
 import store from '../store';
 
 class Shop extends Component {
   componentDidMount() {
-    this.setState({ products: seedData });
+    // this.setState({ products: seedData });
     store.subscribe(() => this.forceUpdate());
   }
 
