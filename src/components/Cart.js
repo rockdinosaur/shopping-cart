@@ -7,6 +7,10 @@ import CartItem from './CartItem';
 // and handleCheckoutClick prop function
 
 class Cart extends Component {
+  handleCheckoutClick = () => {
+    this.props.cartItems.length && this.props.handleCheckoutClick();
+  }
+
   render() {
     const items = this.props.cartItems.map(item => {
       return (
@@ -20,8 +24,7 @@ class Cart extends Component {
     });
 
     const hasItems = this.props.cartItems.length > 0;
-
-    let total = this.props.cartItems.reduce((total, item) => total + item.quantity * item.price, 0).toFixed(2);
+    const total = this.props.cartItems.reduce((total, item) => total + item.quantity * item.price, 0).toFixed(2);
 
     const itemsTable = (
       <table className="cart-items">
@@ -56,7 +59,7 @@ class Cart extends Component {
         {hasItems ? itemsTable : noItemsTable}
         <a
           className={`button checkout ${hasItems ? '' : 'disabled'}`}
-          onClick={this.props.handleCheckoutClick}
+          onClick={this.handleCheckoutClick}
         >Checkout</a>
       </div>
     )

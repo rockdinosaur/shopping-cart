@@ -1,6 +1,12 @@
 import React, { Component } from 'react';
 import ProductForm from './ProductForm';
 
+// Props:
+// product = {}
+// handleAddToCart
+// handleDeleteProduct
+// handleEditProduct
+
 class Product extends Component {
   state = {
     toggleEditForm: false
