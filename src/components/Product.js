@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import ProductForm from './ProductForm';
-import store from '../store';
 
 class Product extends Component {
   state = {
@@ -8,18 +7,11 @@ class Product extends Component {
   }
 
   handleAddToCart = () => {
-    const addToCartAction = {
-      type: 'ADD_TO_CART',
-      id: this.props.product.id,
-    }
-    this.props.product.stock && store.dispatch(addToCartAction);
+    this.props.product.stock && this.props.handleAddToCart(this.props.product.id);
   }
 
   handleDeleteProduct = () => {
-    store.dispatch({
-      type: "DELETE_PRODUCT",
-      id: this.props.product.id,
-    });
+    this.props.handleDeleteProduct(this.props.product.id);
   }
 
   handleEditClick = () => {
@@ -38,7 +30,7 @@ class Product extends Component {
         <div className="product-details">
           <h3>{this.props.product.title}</h3>
           <p className="price">{this.props.product.price}</p>
-        <p className="quantity">{this.props.product.stock} left in stock</p>
+          <p className="quantity">{this.props.product.stock} left in stock</p>
           <div className="actions product-actions">
             <a
               className={addToCartClasses}
@@ -59,8 +51,8 @@ class Product extends Component {
           <ProductForm
             mode='edit'
             product={this.props.product}
-            onFormCancel={this.handleEditCancel}
-            onEditProduct={this.props.onEditProduct}
+            handleFormCancel={this.handleEditCancel}
+            handleEditProduct={this.props.handleEditProduct}
           />}
       </div>
     );

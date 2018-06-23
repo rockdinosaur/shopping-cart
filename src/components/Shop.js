@@ -1,31 +1,31 @@
 import React, { Component } from 'react';
 import Header from './Header';
-import ProductList from './ProductList';
+import ProductListContainer from './ProductListContainer';
 import ProductForm from './ProductForm';
-// import seedData from './../seedData';
 import store from '../store';
 
 class Shop extends Component {
   componentDidMount() {
-    // this.setState({ products: seedData });
     store.subscribe(() => this.forceUpdate());
+  }
+
+  handleAddNewProduct = (productData) => {
+    const addAction = {
+      type: 'ADD_PRODUCT',
+      productData: productData,
+    }
+    store.dispatch(addAction);
   }
 
   render() {
     return (
       <div id="app">
-        <Header
-          cartItems={store.getState().cart}
-          handleCheckoutClick={this.emptyCart}
-        />
+        <Header />
         <main>
-          <ProductList
-            products={store.getState().products}
-            onAddToCartClick={this.addToCart}
-          />
+          <ProductListContainer />
           <ProductForm
-            onAddProduct={this.addProduct}
             mode='add'
+            handleAddNewProduct={this.handleAddNewProduct}
           />
         </main>
       </div>

@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import store from '../store'
 
 class ProductForm extends Component {
   state = {
@@ -23,11 +22,28 @@ class ProductForm extends Component {
     }
   }
 
-  handleFormCancel = () => {
-    if (this.props.mode === 'edit') {
-      this.props.onFormCancel();
-    } else {
-      this.setState(prevState => ({ fields: { title: '', price: '', stock: '' }, fieldErrors: {} }));
+  onInputChange = (e) => {
+    const fields = { ...this.state.fields };
+    fields[e.target.name] = e.target.value;
+    this.setState({ fields: fields });
+  }
+
+  onFormSubmit = (e) => {
+    e.preventDefault();
+
+    const product = {};
+    product.title = this.state.fields.title;
+    product.stock = Number(this.state.fields.stock);
+    product.price = parseFloat(this.state.fields.price).toFixed(2);
+
+    const fieldErrors = this.validate(product);
+    this.setState({ fieldErrors: fieldErrors });
+    if (Object.keys(fieldErrors).length) { return; }
+
+    if (this.props.mode === 'add') {
+      this.handleAddNewProduct(product);
+    } else if (this.props.mode === 'edit') {
+      this.handleEditProduct(product);
     }
   }
 
@@ -47,40 +63,22 @@ class ProductForm extends Component {
     }
   }
 
-  onFormSubmit = (e) => {
-    e.preventDefault();
-
-    const product = {};
-    product.title = this.state.fields.title;
-    product.stock = Number(this.state.fields.stock);
-    product.price = parseFloat(this.state.fields.price).toFixed(2);
-
-    const fieldErrors = this.validate(product);
-    this.setState({ fieldErrors: fieldErrors });
-    if (Object.keys(fieldErrors).length) { return; }
-
-    if (this.props.mode === 'add') {
-      const addAction = {
-        type: 'ADD_PRODUCT',
-        productData: product,
-      }
-      store.dispatch(addAction);
-      this.setState(prevState => ({ fields: { title: '', price: '', stock: '' }, fieldErrors: {} }));
-    } else {
-      const editAction = {
-        type: 'EDIT_PRODUCT',
-        productData: product,
-        id: this.props.product.id
-      }
-      store.dispatch(editAction);
-      this.props.onFormCancel();
-    }
+  handleAddNewProduct = (productData) => {
+    this.props.handleAddNewProduct(productData);
+    this.setState({ fields: { title: '', price: '', stock: '' }, fieldErrors: {} });
   }
 
-  onInputChange = (e) => {
-    const fields = { ...this.state.fields };
-    fields[e.target.name] = e.target.value;
-    this.setState(prevState => ({ fields: fields }));
+  handleEditProduct = (productData) => {
+    this.props.handleEditProduct(productData, this.props.product.id)
+    this.props.handleFormCancel();
+  }
+
+  handleFormCancel = () => {
+    if (this.props.mode === 'edit') {
+      this.props.handleFormCancel();
+    } else if (this.props.mode === 'add') {
+      this.setState({ fields: { title: '', price: '', stock: '' }, fieldErrors: {} });
+    }
   }
 
   render() {

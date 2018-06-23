@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-
 import Product from './Product';
 
 class ProductList extends Component {
@@ -8,9 +7,9 @@ class ProductList extends Component {
       return <Product
         key={`product-${product.id}`}
         product={product}
-        onAddToCartClick={this.props.onAddToCartClick}
-        onDeleteProduct={this.props.onDeleteProduct}
-        onEditProduct={this.props.onEditProduct}
+        handleAddToCart={this.props.handleAddToCart}
+        handleDeleteProduct={this.props.handleDeleteProduct}
+        handleEditProduct={this.props.handleEditProduct}
       />
     });
 

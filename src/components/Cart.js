@@ -1,25 +1,14 @@
 import React, { Component } from 'react';
-import store from '../store';
+import CartItem from './CartItem';
+
+// Should have no knowledge of store - PRESENTATIONAL:
+// only recieves cartItems prop:
+// [  { id: 1, price: 79.99, quantity: 1, stock: 4,  title: "Amazon Kindle E-reader" }, {...} ]
+// and handleCheckoutClick prop function
 
 class Cart extends Component {
-  handleCheckoutClick = () => {
-    const checkoutAction = {
-      type: 'CHECKOUT'
-    }
-    this.props.cartItems.length && store.dispatch(checkoutAction);
-    //this.props.cartItems.length && this.props.handleCheckoutClick();
-  }
-
   render() {
-    const itemsWithData = store.getState().cart.map(item => {
-      const match = store.getState().products.filter(product => {
-        return product.id === item.id;
-      })[0];
-
-      return Object.assign(match, item);
-    });
-
-    const items = itemsWithData.map(item => {
+    const items = this.props.cartItems.map(item => {
       return (
         <CartItem
           key={'key-' + item.id}
@@ -30,13 +19,9 @@ class Cart extends Component {
       )
     });
 
-    const hasItems = store.getState().cart.length > 0;
+    const hasItems = this.props.cartItems.length > 0;
 
-    let total = itemsWithData
-      .reduce((total, item) => {
-        return total + item.quantity * item.price
-      }, 0);
-    total = total.toFixed(2);
+    let total = this.props.cartItems.reduce((total, item) => total + item.quantity * item.price, 0).toFixed(2);
 
     const itemsTable = (
       <table className="cart-items">
@@ -71,21 +56,9 @@ class Cart extends Component {
         {hasItems ? itemsTable : noItemsTable}
         <a
           className={`button checkout ${hasItems ? '' : 'disabled'}`}
-          onClick={this.handleCheckoutClick}
+          onClick={this.props.handleCheckoutClick}
         >Checkout</a>
       </div>
-    )
-  }
-}
-
-class CartItem extends React.Component {
-  render() {
-    return (
-      <tr>
-        <td>{this.props.title}</td>
-        <td>{this.props.quantity}</td>
-        <td>{this.props.price}</td>
-      </tr>
     )
   }
 }
